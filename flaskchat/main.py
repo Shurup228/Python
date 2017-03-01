@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 app.config.from_object('config')
-
+#x
 
 class LoginForm(Form):
     openid = StringField('openid', validators=[DataRequired()])
