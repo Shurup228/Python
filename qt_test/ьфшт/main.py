@@ -1,39 +1,44 @@
-import pdb
-from PyQt5.QtGui import QWindow, QSurfaceFormat, QOpenGLContext, QOpenGLWindow
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtGui import QColor
 import sys
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QSurfaceFormat, QOpenGLContext, QColor, QOpenGLWindow
 
 
-class MyWindow(QOpenGLWindow):
-    color = QColor().fromRgb(50, 70, 90)
-    a = (color.redF(), color.greenF(), color.blueF(), color.alphaF())
+class Window(QOpenGLWindow):
+    grey = QColor().fromRgb(211, 211, 211)
+    a = (grey.redF(), grey.greenF(), grey.blueF(), grey.alphaF())
 
     def __init__(self):
         super().__init__()
-        self.o_format = QSurfaceFormat()
-        self.o_format.setVersion(2, 1)
-        self.o_format.setProfile(QSurfaceFormat.CoreProfile)
-        self.setFormat(self.o_format)
-        self.context = QOpenGLContext()
-        self.context.setFormat(self.o_format)
-        self.context.makeCurrent(self)
-        self.context.create()
 
-        self.createUI()
+        f = QSurfaceFormat()
+        f.setVersion(2, 0)
+        f.setProfile(f.CoreProfile)
+        f.setSamples(4)
+        self.setFormat(f)
 
-    def createUI(self):
+        self.c = QOpenGLContext()
+        self.c.setFormat(f)
+        self.c.makeCurrent(self)
 
-        self.show()
+        self.initUI()
 
     def initializeGL(self):
-        self.gl = self.context.versionFunctions()
+        self.gl = self.c.versionFunctions()
         self.gl.initializeOpenGLFunctions()
-        pdb.set_trace()
+
+    def paintGL(self):
+
+        self.gl.glClear(self.gl.GL_COLOR_BUFFER_BIT)
         self.gl.glClearColor(*self.a)
 
+    def resizeGL(self, *args):
+        pass
+
+    def initUI(self):
+        self.showMaximized()
+        self.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    Window = MyWindow()
+    w = Window()
     sys.exit(app.exec_())
