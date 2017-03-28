@@ -6,7 +6,7 @@ def bench(addr, mes):
     sock = socket(AF_INET, SOCK_STREAM)
     sock.connect(addr)
     start = time.time()
-    for n in range(mes):
+    for _ in range(mes):
         sock.send(b'x')
         resp = sock.recv(10000)
     end = time.time()
